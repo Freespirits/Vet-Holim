@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,6 +21,8 @@
             color: var(--text);
             margin: 0;
             background: #f7fafc;
+            direction: rtl;
+            text-align: right;
         }
 
         header {
@@ -41,6 +43,8 @@
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
         }
 
         .nav-button {
@@ -67,6 +71,7 @@
             padding: 0 1rem 1rem;
             display: grid;
             gap: 1rem;
+            direction: rtl;
         }
 
         section {
@@ -75,6 +80,7 @@
             border-radius: 14px;
             padding: 1rem 1.25rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            direction: rtl;
         }
 
         section h2 {
@@ -86,6 +92,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 0.75rem 1rem;
+            direction: rtl;
         }
 
         .data-row {
@@ -94,6 +101,8 @@
             gap: 0.5rem;
             border-bottom: 1px dashed var(--border);
             padding: 0.35rem 0;
+            flex-direction: row-reverse;
+            align-items: center;
         }
 
         .data-row:last-child {
@@ -105,14 +114,16 @@
         }
 
         .value {
-            text-align: right;
+            text-align: left;
             color: #2d3748;
+            direction: ltr;
         }
 
         .vitals-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 0.75rem;
+            direction: rtl;
         }
 
         .pill {
@@ -125,23 +136,29 @@
             padding: 0.4rem 0.75rem;
             font-weight: 600;
             border: 1px solid var(--border);
+            direction: rtl;
+            justify-content: space-between;
+            flex-direction: row-reverse;
         }
 
         .pill small {
             font-weight: 500;
             color: #4a5568;
+            direction: ltr;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 0.5rem;
+            direction: rtl;
+            text-align: right;
         }
 
         th, td {
             border: 1px solid var(--border);
             padding: 0.65rem;
-            text-align: left;
+            text-align: right;
             font-size: 0.95rem;
         }
 
@@ -159,11 +176,17 @@
             align-items: center;
             gap: 0.6rem;
             padding: 0.4rem 0;
+            flex-direction: row-reverse;
         }
 
         .checkbox-row input {
             width: 1.2rem;
             height: 1.2rem;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
         }
 
         @media (min-width: 900px) {
@@ -179,84 +202,84 @@
 </head>
 <body>
     <header>
-        <h1>Vet Holim - Patient Card</h1>
+        <h1 id="title">Vet Holim - Patient Card</h1>
         <div class="nav-actions">
-            <button class="nav-button">Patient Overview</button>
-            <button class="nav-button">History</button>
-            <button class="nav-button">Vitals</button>
-            <button class="nav-button">Treatments</button>
-            <button class="nav-button">Sign-Offs</button>
+            <button class="nav-button" id="nav-overview">Patient Overview</button>
+            <button class="nav-button" id="nav-history">History</button>
+            <button class="nav-button" id="nav-vitals">Vitals</button>
+            <button class="nav-button" id="nav-treatments">Treatments</button>
+            <button class="nav-button" id="nav-signoffs">Sign-Offs</button>
         </div>
     </header>
 
     <main>
         <section>
-            <h2>Patient Demographics</h2>
+            <h2 id="heading-demographics">Patient Demographics</h2>
             <div class="grid-two">
-                <div class="data-row"><span class="label">Name</span><span class="value">Mitsi</span></div>
-                <div class="data-row"><span class="label">Species</span><span class="value">Feline</span></div>
-                <div class="data-row"><span class="label">Breed</span><span class="value">Siamese mix</span></div>
-                <div class="data-row"><span class="label">Sex</span><span class="value">Spayed Female</span></div>
-                <div class="data-row"><span class="label">Age</span><span class="value">6 yrs</span></div>
-                <div class="data-row"><span class="label">Weight</span><span class="value">4.1 kg</span></div>
-                <div class="data-row"><span class="label">Coat Color</span><span class="value">Seal point</span></div>
+                <div class="data-row"><span class="label" id="label-name">Name</span><span class="value">מיצי</span></div>
+                <div class="data-row"><span class="label" id="label-species">Species</span><span class="value">חתול</span></div>
+                <div class="data-row"><span class="label" id="label-breed">Breed</span><span class="value">מעורב סיאמי</span></div>
+                <div class="data-row"><span class="label" id="label-sex">Sex</span><span class="value">נקבה מעוקרת</span></div>
+                <div class="data-row"><span class="label" id="label-age">Age</span><span class="value">6 שנים</span></div>
+                <div class="data-row"><span class="label" id="label-weight">Weight</span><span class="value">4.1 ק"ג</span></div>
+                <div class="data-row"><span class="label" id="label-coat">Coat Color</span><span class="value">סיל פוינט</span></div>
             </div>
         </section>
 
         <section>
-            <h2>Medical History</h2>
-            <div class="data-row"><span class="label">Vaccinations</span><span class="value">Rabies (2023), FVRCP (2024)</span></div>
-            <div class="data-row"><span class="label">Allergies</span><span class="value">Penicillin (rash)</span></div>
-            <div class="data-row"><span class="label">Diet</span><span class="value">Renal prescription diet</span></div>
-            <div class="data-row"><span class="label">Kidney Issues</span><span class="value">CKD Stage II, monitored monthly</span></div>
+            <h2 id="heading-history">Medical History</h2>
+            <div class="data-row"><span class="label" id="label-vaccinations">Vaccinations</span><span class="value">כלבת (2023), FVRCP (2024)</span></div>
+            <div class="data-row"><span class="label" id="label-allergies">Allergies</span><span class="value">פניצילין (פריחה)</span></div>
+            <div class="data-row"><span class="label" id="label-diet">Diet</span><span class="value">דיאטה רפואית לכליות</span></div>
+            <div class="data-row"><span class="label" id="label-kidney">Kidney Issues</span><span class="value">CKD דרגה II, במעקב חודשי</span></div>
         </section>
 
         <section>
-            <h2>Baseline Vitals</h2>
+            <h2 id="heading-vitals">Baseline Vitals</h2>
             <div class="vitals-grid">
-                <div class="pill"><strong>Weight</strong> <small>4.1 kg</small></div>
-                <div class="pill"><strong>Blood Pressure</strong> <small>140/85 mmHg</small></div>
-                <div class="pill"><strong>Pulse</strong> <small>128 bpm (optional)</small></div>
-                <div class="pill"><strong>Temperature</strong> <small>38.2°C (optional)</small></div>
+                <div class="pill"><strong id="pill-weight">Weight</strong> <small>4.1 ק"ג</small></div>
+                <div class="pill"><strong id="pill-bp">Blood Pressure</strong> <small>140/85 מ"מ כספית</small></div>
+                <div class="pill"><strong id="pill-pulse">Pulse</strong> <small>128 bpm (אופציונלי)</small></div>
+                <div class="pill"><strong id="pill-temp">Temperature</strong> <small>38.2°C (אופציונלי)</small></div>
             </div>
         </section>
 
         <section class="full-width">
-            <h2>Treatment Log</h2>
+            <h2 id="heading-treatments">Treatment Log</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Timestamp</th>
-                        <th>Treatment</th>
-                        <th>Dosage / Notes</th>
-                        <th>Staff</th>
-                        <th>Controlled Drug</th>
-                        <th>Vet Approval</th>
+                        <th id="th-timestamp">Timestamp</th>
+                        <th id="th-treatment">Treatment</th>
+                        <th id="th-notes">Dosage / Notes</th>
+                        <th id="th-staff">Staff</th>
+                        <th id="th-controlled">Controlled Drug</th>
+                        <th id="th-approval">Vet Approval</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2024-07-10 09:00</td>
-                        <td>SubQ Fluids</td>
+                        <td class="ltr">2024-07-10 09:00</td>
+                        <td>נוזלים תת‏-עוריים</td>
                         <td>100 mL Lactated Ringer's</td>
                         <td>RN Dana</td>
-                        <td class="flag">No</td>
+                        <td class="flag">לא</td>
                         <td>—</td>
                     </tr>
                     <tr>
-                        <td>2024-07-10 11:30</td>
-                        <td>Buprenorphine</td>
-                        <td>0.02 mg/kg IM</td>
+                        <td class="ltr">2024-07-10 11:30</td>
+                        <td>בופרנורפין</td>
+                        <td>0.02 מ"ג/ק"ג IM</td>
                         <td>Dr. Amir</td>
-                        <td class="flag">Yes</td>
-                        <td class="flag">Approved</td>
+                        <td class="flag">כן</td>
+                        <td class="flag">מאושר</td>
                     </tr>
                     <tr>
-                        <td>2024-07-10 14:15</td>
-                        <td>Maropitant</td>
-                        <td>1 mg/kg SQ</td>
+                        <td class="ltr">2024-07-10 14:15</td>
+                        <td>מרופיטנט</td>
+                        <td>1 מ"ג/ק"ג SQ</td>
                         <td>RN Dana</td>
-                        <td>No</td>
+                        <td>לא</td>
                         <td>—</td>
                     </tr>
                 </tbody>
@@ -264,28 +287,133 @@
         </section>
 
         <section class="full-width">
-            <h2>Sign-Offs & Safety Checks</h2>
+            <h2 id="heading-signoffs">Sign-Offs & Safety Checks</h2>
             <div class="checkbox-row">
                 <input type="checkbox" id="meds-reviewed" />
-                <label for="meds-reviewed">Medications reviewed & doses verified</label>
+                <label for="meds-reviewed" id="label-meds">Medications reviewed & doses verified</label>
             </div>
             <div class="checkbox-row">
                 <input type="checkbox" id="owner-consent" />
-                <label for="owner-consent">Owner consent documented</label>
+                <label for="owner-consent" id="label-consent">Owner consent documented</label>
             </div>
             <div class="checkbox-row">
                 <input type="checkbox" id="controlled-drug" />
-                <label for="controlled-drug">Controlled drug administered — requires veterinarian approval</label>
+                <label for="controlled-drug" id="label-controlled">Controlled drug administered — requires veterinarian approval</label>
             </div>
             <div class="checkbox-row">
                 <input type="checkbox" id="vet-approval" />
-                <label for="vet-approval">Veterinarian approval recorded for controlled substances</label>
+                <label for="vet-approval" id="label-approval">Veterinarian approval recorded for controlled substances</label>
             </div>
             <div class="checkbox-row">
                 <input type="checkbox" id="discharge" />
-                <label for="discharge">Discharge instructions provided</label>
+                <label for="discharge" id="label-discharge">Discharge instructions provided</label>
             </div>
         </section>
     </main>
+
+    <script>
+        const i18n = {
+            title: "וטר הולים - כרטיס מטופל",
+            nav: {
+                overview: "סקירת מטופל",
+                history: "היסטוריה",
+                vitals: "מדדים",
+                treatments: "טיפולים",
+                signoffs: "אישורים"
+            },
+            headings: {
+                demographics: "נתוני מטופל",
+                history: "היסטוריה רפואית",
+                vitals: "מדדים בסיסיים",
+                treatments: "יומן טיפולים",
+                signoffs: "אישורים ובדיקות בטיחות"
+            },
+            labels: {
+                name: "שם",
+                species: "מין",
+                breed: "גזע",
+                sex: "מין ביולוגי",
+                age: "גיל",
+                weight: "משקל",
+                coat: "צבע פרווה",
+                vaccinations: "חיסונים",
+                allergies: "אלרגיות",
+                diet: "תזונה",
+                kidney: "בעיות כליה"
+            },
+            vitals: {
+                weight: "משקל",
+                bloodPressure: "לחץ דם",
+                pulse: "דופק",
+                temperature: "חום גוף"
+            },
+            table: {
+                timestamp: "חותמת זמן",
+                treatment: "טיפול",
+                notes: "מינון / הערות",
+                staff: "צוות",
+                controlled: "תרופה מבוקרת",
+                approval: "אישור וטרינר"
+            },
+            checklist: {
+                meds: "תרופות נבדקו והמינונים אומתו",
+                consent: "הסכמת בעלים מתועדת",
+                controlled: "תרופה מבוקרת ניתנה — דורש אישור וטרינר",
+                vetApproval: "אישור וטרינר תועד לתרופות מבוקרות",
+                discharge: "הוראות שחרור נמסרו"
+            }
+        };
+
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = value;
+            }
+        };
+
+        document.documentElement.lang = "he";
+        setText("title", i18n.title);
+        setText("nav-overview", i18n.nav.overview);
+        setText("nav-history", i18n.nav.history);
+        setText("nav-vitals", i18n.nav.vitals);
+        setText("nav-treatments", i18n.nav.treatments);
+        setText("nav-signoffs", i18n.nav.signoffs);
+
+        setText("heading-demographics", i18n.headings.demographics);
+        setText("heading-history", i18n.headings.history);
+        setText("heading-vitals", i18n.headings.vitals);
+        setText("heading-treatments", i18n.headings.treatments);
+        setText("heading-signoffs", i18n.headings.signoffs);
+
+        setText("label-name", i18n.labels.name);
+        setText("label-species", i18n.labels.species);
+        setText("label-breed", i18n.labels.breed);
+        setText("label-sex", i18n.labels.sex);
+        setText("label-age", i18n.labels.age);
+        setText("label-weight", i18n.labels.weight);
+        setText("label-coat", i18n.labels.coat);
+        setText("label-vaccinations", i18n.labels.vaccinations);
+        setText("label-allergies", i18n.labels.allergies);
+        setText("label-diet", i18n.labels.diet);
+        setText("label-kidney", i18n.labels.kidney);
+
+        setText("pill-weight", i18n.vitals.weight);
+        setText("pill-bp", i18n.vitals.bloodPressure);
+        setText("pill-pulse", i18n.vitals.pulse);
+        setText("pill-temp", i18n.vitals.temperature);
+
+        setText("th-timestamp", i18n.table.timestamp);
+        setText("th-treatment", i18n.table.treatment);
+        setText("th-notes", i18n.table.notes);
+        setText("th-staff", i18n.table.staff);
+        setText("th-controlled", i18n.table.controlled);
+        setText("th-approval", i18n.table.approval);
+
+        setText("label-meds", i18n.checklist.meds);
+        setText("label-consent", i18n.checklist.consent);
+        setText("label-controlled", i18n.checklist.controlled);
+        setText("label-approval", i18n.checklist.vetApproval);
+        setText("label-discharge", i18n.checklist.discharge);
+    </script>
 </body>
 </html>
