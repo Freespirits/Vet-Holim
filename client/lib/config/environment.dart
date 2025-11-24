@@ -22,11 +22,19 @@ class Environment {
   final FeatureFlags featureFlags;
 }
 
-FeatureFlags _defaultFlags() => const FeatureFlags(
-      enableOfflineSync: true,
-      enableAuditTrail: true,
-      enableClinicaIntegration: false,
-    );
+const defaultFeatureFlags = FeatureFlags(
+  enableOfflineSync: true,
+  enableAuditTrail: true,
+  enableClinicaIntegration: false,
+);
+
+const defaultEnvironment = Environment(
+  name: 'dev',
+  apiBaseUrl: 'http://localhost:4000',
+  featureFlags: defaultFeatureFlags,
+);
+
+FeatureFlags _defaultFlags() => defaultFeatureFlags;
 
 Environment buildEnvironment() {
   const env = String.fromEnvironment('APP_ENV', defaultValue: 'dev');
