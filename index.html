@@ -1,15 +1,291 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vet Holim - Patient Card</title>
+    <style>
+        :root {
+            --accent: #2b6cb0;
+            --accent-2: #edf2f7;
+            --text: #1a202c;
+            --border: #cbd5e0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            margin: 0;
+            background: #f7fafc;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.6rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--accent-2);
+            color: var(--text);
+            font-weight: 600;
+            flex: 1 1 160px;
+            min-height: 48px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .nav-button:active {
+            transform: scale(0.99);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 1.25rem auto 2rem;
+            padding: 0 1rem 1rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        section {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        section h2 {
+            margin-top: 0;
+            font-size: 1.15rem;
+        }
+
+        .grid-two {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.75rem 1rem;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            border-bottom: 1px dashed var(--border);
+            padding: 0.35rem 0;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: 600;
+        }
+
+        .value {
+            text-align: right;
+            color: #2d3748;
+        }
+
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-2);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 0.4rem 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .pill small {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.65rem;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--accent-2);
+        }
+
+        .flag {
+            color: #b83280;
+            font-weight: 700;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 0;
+        }
+
+        .checkbox-row input {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        @media (min-width: 900px) {
+            main {
+                grid-template-columns: 2fr 1.4fr;
+            }
+
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>כרטיס מטופל</h1>
-    <div>
-        <label>שם החיה:</label> <span>למשל מיצי</span>
-    </div>
-    <div>
-        <label>משקל:</label> <span>למשל 4 ק"ג</span>
-    </div>
+    <header>
+        <h1>Vet Holim - Patient Card</h1>
+        <div class="nav-actions">
+            <button class="nav-button">Patient Overview</button>
+            <button class="nav-button">History</button>
+            <button class="nav-button">Vitals</button>
+            <button class="nav-button">Treatments</button>
+            <button class="nav-button">Sign-Offs</button>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>Patient Demographics</h2>
+            <div class="grid-two">
+                <div class="data-row"><span class="label">Name</span><span class="value">Mitsi</span></div>
+                <div class="data-row"><span class="label">Species</span><span class="value">Feline</span></div>
+                <div class="data-row"><span class="label">Breed</span><span class="value">Siamese mix</span></div>
+                <div class="data-row"><span class="label">Sex</span><span class="value">Spayed Female</span></div>
+                <div class="data-row"><span class="label">Age</span><span class="value">6 yrs</span></div>
+                <div class="data-row"><span class="label">Weight</span><span class="value">4.1 kg</span></div>
+                <div class="data-row"><span class="label">Coat Color</span><span class="value">Seal point</span></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Medical History</h2>
+            <div class="data-row"><span class="label">Vaccinations</span><span class="value">Rabies (2023), FVRCP (2024)</span></div>
+            <div class="data-row"><span class="label">Allergies</span><span class="value">Penicillin (rash)</span></div>
+            <div class="data-row"><span class="label">Diet</span><span class="value">Renal prescription diet</span></div>
+            <div class="data-row"><span class="label">Kidney Issues</span><span class="value">CKD Stage II, monitored monthly</span></div>
+        </section>
+
+        <section>
+            <h2>Baseline Vitals</h2>
+            <div class="vitals-grid">
+                <div class="pill"><strong>Weight</strong> <small>4.1 kg</small></div>
+                <div class="pill"><strong>Blood Pressure</strong> <small>140/85 mmHg</small></div>
+                <div class="pill"><strong>Pulse</strong> <small>128 bpm (optional)</small></div>
+                <div class="pill"><strong>Temperature</strong> <small>38.2°C (optional)</small></div>
+            </div>
+        </section>
+
+        <section class="full-width">
+            <h2>Treatment Log</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Treatment</th>
+                        <th>Dosage / Notes</th>
+                        <th>Staff</th>
+                        <th>Controlled Drug</th>
+                        <th>Vet Approval</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-07-10 09:00</td>
+                        <td>SubQ Fluids</td>
+                        <td>100 mL Lactated Ringer's</td>
+                        <td>RN Dana</td>
+                        <td class="flag">No</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>2024-07-10 11:30</td>
+                        <td>Buprenorphine</td>
+                        <td>0.02 mg/kg IM</td>
+                        <td>Dr. Amir</td>
+                        <td class="flag">Yes</td>
+                        <td class="flag">Approved</td>
+                    </tr>
+                    <tr>
+                        <td>2024-07-10 14:15</td>
+                        <td>Maropitant</td>
+                        <td>1 mg/kg SQ</td>
+                        <td>RN Dana</td>
+                        <td>No</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="full-width">
+            <h2>Sign-Offs & Safety Checks</h2>
+            <div class="checkbox-row">
+                <input type="checkbox" id="meds-reviewed" />
+                <label for="meds-reviewed">Medications reviewed & doses verified</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="owner-consent" />
+                <label for="owner-consent">Owner consent documented</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="controlled-drug" />
+                <label for="controlled-drug">Controlled drug administered — requires veterinarian approval</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="vet-approval" />
+                <label for="vet-approval">Veterinarian approval recorded for controlled substances</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="discharge" />
+                <label for="discharge">Discharge instructions provided</label>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
