@@ -22,11 +22,17 @@ class Environment {
   final FeatureFlags featureFlags;
 }
 
-FeatureFlags _defaultFlags() => const FeatureFlags(
-      enableOfflineSync: true,
-      enableAuditTrail: true,
-      enableClinicaIntegration: false,
-    );
+const FeatureFlags defaultFeatureFlags = FeatureFlags(
+  enableOfflineSync: true,
+  enableAuditTrail: true,
+  enableClinicaIntegration: false,
+);
+
+const Environment devEnvironment = Environment(
+  name: 'dev',
+  apiBaseUrl: String.fromEnvironment('API_BASE_URL', defaultValue: 'http://localhost:4000'),
+  featureFlags: defaultFeatureFlags,
+);
 
 Environment buildEnvironment() {
   const env = String.fromEnvironment('APP_ENV', defaultValue: 'dev');
@@ -35,19 +41,15 @@ Environment buildEnvironment() {
       return Environment(
         name: 'production',
         apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.vetholim.local'),
-        featureFlags: _defaultFlags(),
+        featureFlags: defaultFeatureFlags,
       );
     case 'staging':
       return Environment(
         name: 'staging',
         apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://staging-api.vetholim.local'),
-        featureFlags: _defaultFlags(),
+        featureFlags: defaultFeatureFlags,
       );
     default:
-      return Environment(
-        name: 'dev',
-        apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'http://localhost:4000'),
-        featureFlags: _defaultFlags(),
-      );
+      return devEnvironment;
   }
 }
