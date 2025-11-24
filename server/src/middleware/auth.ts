@@ -23,6 +23,16 @@ export async function authenticate(req: AuthenticatedRequest, res: Response, nex
     req.user = JSON.parse(String(req.headers['x-test-user'])) as User;
     return next();
   }
+  if (env.loadTestToken && req.headers['x-loadtest-token'] === env.loadTestToken) {
+    req.user = {
+      id: 'load-test-user',
+      email: 'loadtest@example.com',
+      name: 'Load Test User',
+      roles: ['admin'],
+      mfaEnabled: false
+    } as User;
+    return next();
+  }
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {

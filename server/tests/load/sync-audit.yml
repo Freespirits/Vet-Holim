@@ -1,0 +1,25 @@
+config:
+  target: "http://localhost:4000"
+  phases:
+    - duration: 10
+      arrivalRate: 2
+  processor: |
+    function beforeRequest(req, context, events, done) {
+      req.headers['x-loadtest-token'] = process.env.LOAD_TEST_TOKEN || 'dev-loadtest';
+      done();
+    }
+scenarios:
+  - name: "sync enqueue and backoff policy"
+    flow:
+      - get:
+          url: "/sync/backoff-policy"
+      - post:
+          url: "/sync/enqueue"
+          json:
+            payload:
+              source: "load-test"
+              size: 1
+      - get:
+          url: "/feature-flags"
+      - get:
+          url: "/health"

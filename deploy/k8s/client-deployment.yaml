@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vetholim-client
+  namespace: vetholim
+  labels:
+    app: vetholim
+    tier: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vetholim-client
+  template:
+    metadata:
+      labels:
+        app: vetholim-client
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/vetholim/client:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_ENV
+              value: production
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vetholim-client
+  namespace: vetholim
+  labels:
+    app: vetholim
+    tier: frontend
+spec:
+  selector:
+    app: vetholim-client
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
