@@ -7,7 +7,7 @@ import 'config/environment.dart';
 
 class VetHolimApp extends StatelessWidget {
   const VetHolimApp({super.key, Environment? environment})
-      : environment = environment ?? devEnvironment;
+      : environment = environment ?? defaultEnvironment;
 
   final Environment environment;
 
