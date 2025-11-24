@@ -1,0 +1,7 @@
+template-arb-file: app_en.arb
+synthetic-package: false
+output-class: AppLocalizations
+output-localization-file: app_localizations.dart
+untranslated-messages-file: untranslated_messages.txt
+arb-dir: lib/l10n
+use-deferred-loading: false
