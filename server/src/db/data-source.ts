@@ -11,7 +11,7 @@ import { AuditLog } from '../entities/AuditLog.js';
 const entities = [User, Patient, Encounter, Order, MedicationAdministrationRecord, AuditLog];
 
 function buildDataSource(): DataSource {
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === 'test' || env.useInMemoryDb) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { newDb } = require('pg-mem');
     const db = newDb();

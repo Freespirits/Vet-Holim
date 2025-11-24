@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vetholim-config
+  labels:
+    app: vetholim
+    tier: backend
+    component: api
+  namespace: vetholim
+data:
+  APP_ENV: production
+  SERVICE_NAME: vetholim-api
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+  FEATURE_FLAGS: |
+    {"enableOfflineSync":true,"enableAuditTrail":true,"enableClinicaIntegration":false}

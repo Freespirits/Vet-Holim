@@ -6,11 +6,14 @@ import '../encounters/encounters_screen.dart';
 import '../meds/meds_screen.dart';
 import '../tasks/tasks_screen.dart';
 import '../settings/settings_screen.dart';
+import '../../config/environment.dart';
 
 final navigationIndexProvider = StateProvider<int>((ref) => 0);
 
 class HomeShell extends ConsumerWidget {
-  const HomeShell({super.key});
+  const HomeShell({super.key, required this.environment});
+
+  final Environment environment;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -98,7 +101,7 @@ class HomeShell extends ConsumerWidget {
       case 3:
         return const TasksScreen();
       case 4:
-        return const SettingsScreen();
+        return SettingsScreen(environment: environment);
       case 0:
       default:
         return const PatientCardScreen();

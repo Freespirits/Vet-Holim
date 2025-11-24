@@ -3,9 +3,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'features/navigation/home_shell.dart';
+import 'config/environment.dart';
 
 class VetHolimApp extends StatelessWidget {
-  const VetHolimApp({super.key});
+  const VetHolimApp({super.key, required this.environment});
+
+  final Environment environment;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +31,9 @@ class VetHolimApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const Directionality(
+      home: Directionality(
         textDirection: TextDirection.rtl,
-        child: HomeShell(),
+        child: HomeShell(environment: environment),
       ),
     );
   }
