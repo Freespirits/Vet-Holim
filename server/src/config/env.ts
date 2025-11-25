@@ -2,9 +2,19 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const vercelDatabaseUrl =
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.POSTGRES_URL_NON_POOLING ||
+  process.env.POSTGRES_URL ||
+  process.env.POSTGRES_CONNECTION_STRING;
+
+const databaseUrl = process.env.DATABASE_URL || vercelDatabaseUrl || 'postgres://postgres:postgres@localhost:5432/vetholim';
+const shouldUseSsl = process.env.DATABASE_SSL === 'true' || (process.env.DATABASE_SSL !== 'false' && Boolean(vercelDatabaseUrl));
+
 export const env = {
   port: parseInt(process.env.PORT || '4000', 10),
-  databaseUrl: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/vetholim',
+  databaseUrl,
+  databaseSsl: shouldUseSsl,
   oidcIssuer: process.env.OIDC_ISSUER || 'https://example-issuer',
   oidcClientId: process.env.OIDC_CLIENT_ID || 'vetholim-api',
   redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',

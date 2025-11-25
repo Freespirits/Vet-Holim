@@ -20,6 +20,7 @@ function buildDataSource(): DataSource {
   return new DataSource({
     type: 'postgres',
     url: env.databaseUrl,
+    ssl: env.databaseSsl ? { rejectUnauthorized: false } : undefined,
     entities,
     synchronize: true
   });
