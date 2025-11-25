@@ -316,7 +316,7 @@ class _TaskCard extends StatelessWidget {
                 if (task.isDischargeReady)
                   _TagChip(
                     label: localizations.tasksCardReadyDischarge,
-                    icon: Icons.door_open,
+                    icon: Icons.meeting_room_outlined,
                     color: Colors.teal,
                   ),
               ],
