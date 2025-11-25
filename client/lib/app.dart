@@ -22,10 +22,7 @@ class VetHolimApp extends StatelessWidget {
         fontFamily: 'Roboto',
       ),
       locale: const Locale('he'),
-      supportedLocales: const [
-        Locale('en'),
-        Locale('he'),
-      ],
+      supportedLocales: const [Locale('he')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
