@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { scheduleSync } from '../queues/syncQueue.js';
 import { requirePermission } from '../middleware/auth.js';
+import { getSyncBackoffPolicy } from '../config/syncConfig.js';
 
 const router = Router();
 
@@ -10,7 +11,14 @@ router.post('/enqueue', requirePermission('patient.write'), async (req, res) => 
 });
 
 router.get('/backoff-policy', (_req, res) => {
-  res.json({ strategy: 'exponential', jitter: true });
+  const policy = getSyncBackoffPolicy();
+  res.json({
+    strategy: policy.strategy,
+    jitter: policy.jitter,
+    baseMs: policy.baseMs,
+    maxMs: policy.maxMs,
+    attempts: policy.attempts
+  });
 });
 
 export default router;
