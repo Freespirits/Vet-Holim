@@ -34,24 +34,22 @@ const defaultEnvironment = Environment(
   featureFlags: defaultFeatureFlags,
 );
 
-FeatureFlags _defaultFlags() => defaultFeatureFlags;
-
 Environment buildEnvironment() {
   const env = String.fromEnvironment('APP_ENV', defaultValue: 'dev');
   switch (env) {
     case 'production':
-      return Environment(
+      return const Environment(
         name: 'production',
         apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.vetholim.local'),
         featureFlags: defaultFeatureFlags,
       );
     case 'staging':
-      return Environment(
+      return const Environment(
         name: 'staging',
         apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://staging-api.vetholim.local'),
         featureFlags: defaultFeatureFlags,
       );
     default:
-      return devEnvironment;
+      return defaultEnvironment;
   }
 }

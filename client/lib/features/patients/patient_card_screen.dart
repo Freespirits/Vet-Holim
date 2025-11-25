@@ -269,7 +269,8 @@ class _VitalsGrid extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
               ),
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              backgroundColor:
+                  Theme.of(context).colorScheme.surfaceContainerHighest,
               labelPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               label: Column(
                 mainAxisSize: MainAxisSize.min,
