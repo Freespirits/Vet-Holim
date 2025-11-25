@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -103,40 +105,191 @@ class PatientCardScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     final patient = _mockProfile();
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF7FAFC),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _SectionCard(
-                title: localizations.patientDemographicsHeading,
-                child: _DemographicsGrid(patient: patient, localizations: localizations),
-              ),
-              _SectionCard(
-                title: localizations.medicalHistoryHeading,
-                child: _HistoryList(patient: patient, localizations: localizations),
-              ),
-              _SectionCard(
-                title: localizations.baselineVitalsHeading,
-                child: _VitalsGrid(vitals: patient.vitals, localizations: localizations),
-              ),
-              _SectionCard(
-                title: localizations.treatmentLogHeading,
-                child: _TreatmentTable(
-                  treatments: patient.treatments,
-                  localizations: localizations,
+    return Stack(
+      children: [
+        const _PawBackdrop(),
+        SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 22,
+                          offset: Offset(0, 12),
+                        ),
+                      ],
+                    ),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _PatientHeader(patient: patient),
+                          const SizedBox(height: 12),
+                          _SectionCard(
+                            title: localizations.patientDemographicsHeading,
+                            child: _DemographicsGrid(patient: patient, localizations: localizations),
+                          ),
+                          _SectionCard(
+                            title: localizations.medicalHistoryHeading,
+                            child: _HistoryList(patient: patient, localizations: localizations),
+                          ),
+                          _SectionCard(
+                            title: localizations.baselineVitalsHeading,
+                            child: _VitalsGrid(vitals: patient.vitals, localizations: localizations),
+                          ),
+                          _SectionCard(
+                            title: localizations.treatmentLogHeading,
+                            child: _TreatmentTable(
+                              treatments: patient.treatments,
+                              localizations: localizations,
+                            ),
+                          ),
+                          _SectionCard(
+                            title: localizations.signoffHeading,
+                            child: _Checklist(localizations: localizations),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              _SectionCard(
-                title: localizations.signoffHeading,
-                child: _Checklist(localizations: localizations),
-              ),
-            ],
+            ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _PawBackdrop extends StatelessWidget {
+  const _PawBackdrop();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF0D47A1), Color(0xFF64B5F6)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Stack(
+        children: const [
+          _PawGraphic(top: -10, left: 12, size: 140, opacity: 0.08, rotationTurns: 0.05),
+          _PawGraphic(top: 120, right: 40, size: 110, opacity: 0.07, rotationTurns: -0.03),
+          _PawGraphic(bottom: 180, left: 60, size: 120, opacity: 0.05, rotationTurns: 0.12),
+          _PawGraphic(bottom: 40, right: -6, size: 150, opacity: 0.06, rotationTurns: -0.08),
+          _PawGraphic(top: 260, left: 180, size: 90, opacity: 0.05, rotationTurns: 0.18),
+        ],
+      ),
+    );
+  }
+}
+
+class _PawGraphic extends StatelessWidget {
+  const _PawGraphic({
+    required this.size,
+    required this.opacity,
+    this.top,
+    this.right,
+    this.bottom,
+    this.left,
+    this.rotationTurns = 0,
+  });
+
+  final double? top;
+  final double? right;
+  final double? bottom;
+  final double? left;
+  final double size;
+  final double opacity;
+  final double rotationTurns;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: top,
+      right: right,
+      bottom: bottom,
+      left: left,
+      child: Transform.rotate(
+        angle: rotationTurns * 2 * math.pi,
+        child: Icon(
+          Icons.pets,
+          size: size,
+          color: Colors.white.withOpacity(opacity),
+        ),
+      ),
+    );
+  }
+}
+
+class _PatientHeader extends StatelessWidget {
+  const _PatientHeader({required this.patient});
+
+  final PatientProfile patient;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final accentColor = Theme.of(context).colorScheme.primary;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 28,
+            backgroundColor: Colors.white,
+            child: Icon(Icons.pets, color: accentColor, size: 30),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  patient.name,
+                  style: textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(Icons.badge_outlined, size: 18, color: accentColor),
+                    const SizedBox(width: 6),
+                    Text(
+                      patient.species,
+                      style: textTheme.bodyMedium?.copyWith(color: Colors.black87),
+                    ),
+                    const SizedBox(width: 12),
+                    Icon(Icons.calendar_today_outlined, size: 18, color: accentColor),
+                    const SizedBox(width: 6),
+                    Text(patient.age, style: textTheme.bodyMedium?.copyWith(color: Colors.black87)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -152,6 +305,10 @@ class _SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
+      color: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      elevation: 2,
+      shadowColor: Colors.black.withOpacity(0.04),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(16),
