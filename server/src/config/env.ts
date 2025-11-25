@@ -22,6 +22,11 @@ export const env = {
   dartValidatorPath:
     process.env.DART_VALIDATOR_PATH || new URL('../../shared/dart/validation/bin/validator.dart', import.meta.url).pathname,
   offlineBackoffBaseMs: parseInt(process.env.OFFLINE_BACKOFF_MS || '1000', 10),
+  offlineBackoffMaxMs: parseInt(process.env.OFFLINE_BACKOFF_MAX_MS || '32000', 10),
+  offlineBackoffAttempts: parseInt(process.env.OFFLINE_BACKOFF_ATTEMPTS || '5', 10),
+  offlineBackoffJitter: process.env.OFFLINE_BACKOFF_JITTER
+    ? process.env.OFFLINE_BACKOFF_JITTER === 'true'
+    : true,
   environment: process.env.APP_ENV || process.env.NODE_ENV || 'development',
   useInMemoryDb: process.env.USE_IN_MEMORY_DB === 'true',
   useMockRedis: process.env.MOCK_REDIS === 'true',
