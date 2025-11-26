@@ -4,7 +4,7 @@ const { readFileSync } = require('node:fs');
 const { resolve } = require('node:path');
 
 function loadHtml() {
-    const htmlPath = resolve(__dirname, '..', 'index.html');
+    const htmlPath = resolve(__dirname, '..', 'web', 'index.html');
     return readFileSync(htmlPath, 'utf8');
 }
 
