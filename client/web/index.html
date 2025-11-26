@@ -11,6 +11,7 @@
     <meta name="theme-color" content="#1976d2" />
     <title>Vet Holim</title>
     <script src="flutter.js" defer></script>
+    <script src="main.dart.js" defer></script>
   </head>
   <body>
     <main id="flutter-fallback" data-test="flutter-fallback" hidden>
@@ -36,10 +37,15 @@
 
       function startFlutter() {
         const loader = window._flutter?.loader;
+        const mainBundle = document.querySelector('script[src$="main.dart.js"]');
         if (!loader) {
           showFallback(
             'לא נמצא flutter.js. ודאו שהרצתם "flutter build web" כדי להפיק את משאבי הווב.'
           );
+          return;
+        }
+        if (!mainBundle) {
+          showFallback('לא נמצא main.dart.js. ודאו שהבנייה נפרסה בתוך client/web.');
           return;
         }
 
