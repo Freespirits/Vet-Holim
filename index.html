@@ -1,419 +1,967 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vet Holim - Patient Card</title>
-    <style>
-        :root {
-            --accent: #2b6cb0;
-            --accent-2: #edf2f7;
-            --text: #1a202c;
-            --border: #cbd5e0;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-            color: var(--text);
-            margin: 0;
-            background: #f7fafc;
-            direction: rtl;
-            text-align: right;
-        }
-
-        header {
-            background: #fff;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.6rem;
-        }
-
-        .nav-actions {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .nav-button {
-            padding: 0.75rem 1.25rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--accent-2);
-            color: var(--text);
-            font-weight: 600;
-            flex: 1 1 160px;
-            min-height: 48px;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
-        }
-
-        .nav-button:active {
-            transform: scale(0.99);
-        }
-
-        main {
-            max-width: 1100px;
-            margin: 1.25rem auto 2rem;
-            padding: 0 1rem 1rem;
-            display: grid;
-            gap: 1rem;
-            direction: rtl;
-        }
-
-        section {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1rem 1.25rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-            direction: rtl;
-        }
-
-        section h2 {
-            margin-top: 0;
-            font-size: 1.15rem;
-        }
-
-        .grid-two {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 0.75rem 1rem;
-            direction: rtl;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 0.5rem;
-            border-bottom: 1px dashed var(--border);
-            padding: 0.35rem 0;
-            flex-direction: row-reverse;
-            align-items: center;
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-        }
-
-        .label {
-            font-weight: 600;
-        }
-
-        .value {
-            text-align: left;
-            color: #2d3748;
-            direction: ltr;
-        }
-
-        .vitals-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.75rem;
-            direction: rtl;
-        }
-
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--accent-2);
-            color: var(--text);
-            border-radius: 999px;
-            padding: 0.4rem 0.75rem;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            direction: rtl;
-            justify-content: space-between;
-            flex-direction: row-reverse;
-        }
-
-        .pill small {
-            font-weight: 500;
-            color: #4a5568;
-            direction: ltr;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 0.5rem;
-            direction: rtl;
-            text-align: right;
-        }
-
-        th, td {
-            border: 1px solid var(--border);
-            padding: 0.65rem;
-            text-align: right;
-            font-size: 0.95rem;
-        }
-
-        th {
-            background: var(--accent-2);
-        }
-
-        .flag {
-            color: #b83280;
-            font-weight: 700;
-        }
-
-        .checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.4rem 0;
-            flex-direction: row-reverse;
-        }
-
-        .checkbox-row input {
-            width: 1.2rem;
-            height: 1.2rem;
-        }
-
-        .ltr {
-            direction: ltr;
-            text-align: left;
-        }
-
-        @media (min-width: 900px) {
-            main {
-                grid-template-columns: 2fr 1.4fr;
-            }
-
-            .full-width {
-                grid-column: 1 / -1;
-            }
-        }
-    </style>
+    <title>Vet Holim – לוח אינטגרציה</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1 id="title">Vet Holim - Patient Card</h1>
-        <div class="nav-actions">
-            <button class="nav-button" id="nav-overview">Patient Overview</button>
-            <button class="nav-button" id="nav-history">History</button>
-            <button class="nav-button" id="nav-vitals">Vitals</button>
-            <button class="nav-button" id="nav-treatments">Treatments</button>
-            <button class="nav-button" id="nav-signoffs">Sign-Offs</button>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-title">Vet Holim</span>
+            <span class="brand-subtitle">מעטפת אינטגרציה ל-Flutter</span>
         </div>
+        <nav class="tabs" aria-label="ניווט ראשי">
+            <button class="tab-button active" data-tab-target="tab-manual">חוברת נהלים</button>
+            <button class="tab-button" data-tab-target="tab-journal">יומן רופא</button>
+            <button class="tab-button" data-tab-target="tab-inventory">מלאים</button>
+            <button class="tab-button" data-tab-target="tab-inpatients">מאושפזים</button>
+        </nav>
     </header>
 
-    <main>
-        <section>
-            <h2 id="heading-demographics">Patient Demographics</h2>
-            <div class="grid-two">
-                <div class="data-row"><span class="label" id="label-name">Name</span><span class="value">מיצי</span></div>
-                <div class="data-row"><span class="label" id="label-species">Species</span><span class="value">חתול</span></div>
-                <div class="data-row"><span class="label" id="label-breed">Breed</span><span class="value">מעורב סיאמי</span></div>
-                <div class="data-row"><span class="label" id="label-sex">Sex</span><span class="value">נקבה מעוקרת</span></div>
-                <div class="data-row"><span class="label" id="label-age">Age</span><span class="value">6 שנים</span></div>
-                <div class="data-row"><span class="label" id="label-weight">Weight</span><span class="value">4.1 ק"ג</span></div>
-                <div class="data-row"><span class="label" id="label-coat">Coat Color</span><span class="value">סיל פוינט</span></div>
+    <main class="page">
+        <section class="tab-panel" id="tab-manual">
+            <div class="card">
+                <h2>חוברת נהלים</h2>
+                <p class="muted">
+                    שימושי עבור שילוב Flutter: כל מסך מותאם לטאב ייחודי, כך שניתן לטעון קומפוננטות Flutter ספציפיות במקביל
+                    ל-HTML. הטאב הזה מציג חומרים סטטיים לדוגמה.
+                </p>
+                <ul class="list">
+                    <li>קבלת מטופל – זיהוי כפול, סריקת ברקוד, אימות משקל עדכני.</li>
+                    <li>אישור תרופות – חתימה דיגיטלית של וטרינר עבור תרופות מבוקרות.</li>
+                    <li>שחרור – הוראות כתובות + תור המשך, העברת עותק לבעלים במייל או הדפסה.</li>
+                </ul>
             </div>
         </section>
 
-        <section>
-            <h2 id="heading-history">Medical History</h2>
-            <div class="data-row"><span class="label" id="label-vaccinations">Vaccinations</span><span class="value">כלבת (2023), FVRCP (2024)</span></div>
-            <div class="data-row"><span class="label" id="label-allergies">Allergies</span><span class="value">פניצילין (פריחה)</span></div>
-            <div class="data-row"><span class="label" id="label-diet">Diet</span><span class="value">דיאטה רפואית לכליות</span></div>
-            <div class="data-row"><span class="label" id="label-kidney">Kidney Issues</span><span class="value">CKD דרגה II, במעקב חודשי</span></div>
-        </section>
-
-        <section>
-            <h2 id="heading-vitals">Baseline Vitals</h2>
-            <div class="vitals-grid">
-                <div class="pill"><strong id="pill-weight">Weight</strong> <small>4.1 ק"ג</small></div>
-                <div class="pill"><strong id="pill-bp">Blood Pressure</strong> <small>140/85 מ"מ כספית</small></div>
-                <div class="pill"><strong id="pill-pulse">Pulse</strong> <small>128 bpm (אופציונלי)</small></div>
-                <div class="pill"><strong id="pill-temp">Temperature</strong> <small>38.2°C (אופציונלי)</small></div>
+        <section class="tab-panel" id="tab-journal">
+            <div class="card">
+                <h2>יומן רופא</h2>
+                <p class="muted">סקירת פעולות אחרונות במרפאה (דוגמה סטטית).</p>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">08:15</div>
+                        <div class="timeline-body">מעקב אחר נוזלים – ד"ר רוני אישר התאמות מינון.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">10:20</div>
+                        <div class="timeline-body">ביקור בוקר – בדיקת מצב כללי לכל המאושפזים.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">12:40</div>
+                        <div class="timeline-body">חתימה על שחרור מטופל 38421 לאחר הדרכה לבעלים.</div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="full-width">
-            <h2 id="heading-treatments">Treatment Log</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th id="th-timestamp">Timestamp</th>
-                        <th id="th-treatment">Treatment</th>
-                        <th id="th-notes">Dosage / Notes</th>
-                        <th id="th-staff">Staff</th>
-                        <th id="th-controlled">Controlled Drug</th>
-                        <th id="th-approval">Vet Approval</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="ltr">2024-07-10 09:00</td>
-                        <td>נוזלים תת‏-עוריים</td>
-                        <td>100 mL Lactated Ringer's</td>
-                        <td>RN Dana</td>
-                        <td class="flag">לא</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td class="ltr">2024-07-10 11:30</td>
-                        <td>בופרנורפין</td>
-                        <td>0.02 מ"ג/ק"ג IM</td>
-                        <td>Dr. Amir</td>
-                        <td class="flag">כן</td>
-                        <td class="flag">מאושר</td>
-                    </tr>
-                    <tr>
-                        <td class="ltr">2024-07-10 14:15</td>
-                        <td>מרופיטנט</td>
-                        <td>1 מ"ג/ק"ג SQ</td>
-                        <td>RN Dana</td>
-                        <td>לא</td>
-                        <td>—</td>
-                    </tr>
-                </tbody>
-            </table>
+        <section class="tab-panel" id="tab-inventory">
+            <div class="card">
+                <h2>מלאים</h2>
+                <p class="muted">מקבץ נתוני מלאי להטמעה עתידית ב-Flutter או ב-API.</p>
+                <div class="inventory-grid">
+                    <div class="inventory-card">
+                        <h3>מרופטינט (Cerenia)</h3>
+                        <p>במלאי: 18 בקבוקים</p>
+                        <p class="muted">סף התרעה: 6</p>
+                    </div>
+                    <div class="inventory-card">
+                        <h3>Butorphanol</h3>
+                        <p>במלאי: 9 מנות</p>
+                        <p class="muted">סף התרעה: 5</p>
+                    </div>
+                    <div class="inventory-card">
+                        <h3>LRS 500 mL</h3>
+                        <p>במלאי: 42 שקיות</p>
+                        <p class="muted">סף התרעה: 12</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="full-width">
-            <h2 id="heading-signoffs">Sign-Offs & Safety Checks</h2>
-            <div class="checkbox-row">
-                <input type="checkbox" id="meds-reviewed" />
-                <label for="meds-reviewed" id="label-meds">Medications reviewed & doses verified</label>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="owner-consent" />
-                <label for="owner-consent" id="label-consent">Owner consent documented</label>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="controlled-drug" />
-                <label for="controlled-drug" id="label-controlled">Controlled drug administered — requires veterinarian approval</label>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="vet-approval" />
-                <label for="vet-approval" id="label-approval">Veterinarian approval recorded for controlled substances</label>
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="discharge" />
-                <label for="discharge" id="label-discharge">Discharge instructions provided</label>
+        <section class="tab-panel active" id="tab-inpatients">
+            <div class="card wide">
+                <div class="sheet">
+                    <div class="day-title">יום 1 מתוך 11 – 2025-11-16.</div>
+
+                    <section class="patient-header">
+                        <div class="patient-header-main">
+                            <div class="info-block">
+                                <div class="info-title">מידע כללי</div>
+                                <div class="field-row">
+                                    <span class="field-label">וטרינר/ית</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="vet-name" placeholder="שם המטפל/ת" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">פיקדון</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="deposit" placeholder="סכום" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">תבנית</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="template" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">מספר תיק</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="case-number" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">שדה מותאם</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="custom" />
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="info-title">מטופל</div>
+                                <div class="field-row">
+                                    <span class="field-label">שם</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="patient-name" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">מין</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="patient-sex" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">גיל</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="patient-age" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">צבע</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="patient-color" />
+                                    </span>
+                                </div>
+                                <div class="field-row patient-weight">
+                                    <span class="field-label">משקל</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="patient-weight" />
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="info-title">לקוח</div>
+                                <div class="field-row">
+                                    <span class="field-label">ID :</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="client-id" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">טלפון </span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="client-phone" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">אימייל</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="client-email" />
+                                    </span>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-label">כתובת</span>
+                                    <span class="field-value">
+                                        <input type="text" class="field-input" data-key="client-address" />
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="info-title">רשימת בעיות</div>
+                                <div class="problem-list-box">
+                                    <div class="problem-list-line"></div>
+                                    <div class="problem-list-line"></div>
+                                    <div class="problem-list-line"></div>
+                                    <div class="problem-list-line"></div>
+                                </div>
+                            </div>
+
+                            <div class="info-block icon-block">
+                                <div class="icon-box">
+                                    <span class="dog-icon">🐶</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <table class="time-table">
+                        <thead>
+                            <tr class="time-header">
+                                <th class="time-label">שעה</th>
+                                <th class="time-cell hour-cell">06:00</th>
+                                <th class="time-cell hour-cell">07:00</th>
+                                <th class="time-cell hour-cell">08:00</th>
+                                <th class="time-cell hour-cell">09:00</th>
+                                <th class="time-cell hour-cell">10:00</th>
+                                <th class="time-cell hour-cell">11:00</th>
+                                <th class="time-cell hour-cell">12:00</th>
+                                <th class="time-cell hour-cell">13:00</th>
+                                <th class="time-cell hour-cell">14:00</th>
+                                <th class="time-cell hour-cell">15:00</th>
+                                <th class="time-cell hour-cell">16:00</th>
+                                <th class="time-cell hour-cell">17:00</th>
+                                <th class="time-cell hour-cell">18:00</th>
+                                <th class="time-cell hour-cell">19:00</th>
+                                <th class="time-cell hour-cell">20:00</th>
+                                <th class="time-cell hour-cell">21:00</th>
+                                <th class="time-cell hour-cell">22:00</th>
+                                <th class="time-cell hour-cell">23:00</th>
+                                <th class="time-cell hour-cell">00:00</th>
+                                <th class="time-cell hour-cell">01:00</th>
+                                <th class="time-cell hour-cell">02:00</th>
+                                <th class="time-cell hour-cell">03:00</th>
+                                <th class="time-cell hour-cell">04:00</th>
+                                <th class="time-cell hour-cell">05:00</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="section-divider">
+                                <td class="section-title" colspan="25">ניטורים</td>
+                            </tr>
+                            <tr class="section-subtitle-row">
+                                <td class="section-subtitle" colspan="25">פרוטוקול טיפול נוצר באמצעות SmartFlow.</td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">מצב כללי</th>
+                                <td class="time-cell bg-yellow">QAR</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">קצב נשימה</th>
+                                <td class="time-cell bg-yellow">24</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">22</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">דופק</th>
+                                <td class="time-cell bg-yellow">120</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">110</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">ריריות (MM)</th>
+                                <td class="time-cell bg-yellow">PK</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">PK</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">בדיקת קסטור וריד וצבע</th>
+                                <td class="time-cell bg-yellow">✓</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">חום גוף</th>
+                                <td class="time-cell bg-yellow">38.7</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">20</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">38.5</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">משקל</th>
+                                <td class="time-cell bg-yellow">21.3 kg</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">אישור רופא</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">לחץ דם</th>
+                                <td class="time-cell bg-yellow">110/70</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">מעקב פליטות</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr class="section-divider">
+                                <td class="section-title" colspan="25">פעילויות</td>
+                            </tr>
+                            <tr class="section-subtitle-row">
+                                <td class="section-subtitle" colspan="25"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">צום (NPO) 2 שעות</th>
+                                <td class="time-cell bg-yellow">NPO</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">דיאטה / מזון</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-green">ארוחה</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-green">ארוחה</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">מים</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-green">✓</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-green">✓</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-RTL">מתן שתן</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">+</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">+</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">יציאות</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">+</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label-rtl">הוצאת כלב החוצה</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-green">טיול</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr class="section-divider">
+                                <td class="section-title" colspan="25">נוזלים</td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">LRS</th>
+                                <td class="time-cell bg-yellow">20 מ"ל/שעה</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">20</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">20</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr class="section-divider">
+                                <td class="section-title" colspan="25">תרופות</td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">10 Cerenia inj 11.5 mg IV</th>
+                                <td class="time-cell bg-yellow">inj</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">zofran 4 mg SIV</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">SIV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">SIV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">×4 PANTOPRAZOLE 12 mg IV</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">IV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">IV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">IV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">IV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">5 Metronidazole 150 mg SSIV</th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">SSIV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-yellow">SSIV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">10 Butorphanol 2.5 mg IV</th>
+                                <td class="time-cell bg-pink">IV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell bg-pink">IV</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr class="section-divider">
+                                <td class="section-title" colspan="25">פרוצדורות</td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">iDEXX ספירה</th>
+                                <td class="time-cell file-cell">📄</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label">iDEXX ביוכימיה</th>
+                                <td class="time-cell file-cell">📄</td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label"></th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                            <tr>
+                                <th class="row-label"></th>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                                <td class="time-cell"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
-
-    <script>
-        const i18n = {
-            title: "וט-חולים - כרטיס מטופל",
-            nav: {
-                overview: "סקירת מטופל",
-                history: "היסטוריה",
-                vitals: "מדדים",
-                treatments: "טיפולים",
-                signoffs: "אישורים"
-            },
-            headings: {
-                demographics: "נתוני מטופל",
-                history: "היסטוריה רפואית",
-                vitals: "מדדים בסיסיים",
-                treatments: "יומן טיפולים",
-                signoffs: "אישורים ובדיקות בטיחות"
-            },
-            labels: {
-                name: "שם",
-                species: "מין",
-                breed: "גזע",
-                sex: "מין ביולוגי",
-                age: "גיל",
-                weight: "משקל",
-                coat: "צבע פרווה",
-                vaccinations: "חיסונים",
-                allergies: "אלרגיות",
-                diet: "תזונה",
-                kidney: "בעיות כליה"
-            },
-            vitals: {
-                weight: "משקל",
-                bloodPressure: "לחץ דם",
-                pulse: "דופק",
-                temperature: "חום גוף"
-            },
-            table: {
-                timestamp: "חותמת זמן",
-                treatment: "טיפול",
-                notes: "מינון / הערות",
-                staff: "צוות",
-                controlled: "תרופה מבוקרת",
-                approval: "אישור וטרינר"
-            },
-            checklist: {
-                meds: "תרופות נבדקו והמינונים אומתו",
-                consent: "הסכמת בעלים מתועדת",
-                controlled: "תרופה מבוקרת ניתנה — דורש אישור וטרינר",
-                vetApproval: "אישור וטרינר תועד לתרופות מבוקרות",
-                discharge: "הוראות שחרור נמסרו"
-            }
-        };
-
-        const setText = (id, value) => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.textContent = value;
-            }
-        };
-
-        document.documentElement.lang = "he";
-        setText("title", i18n.title);
-        setText("nav-overview", i18n.nav.overview);
-        setText("nav-history", i18n.nav.history);
-        setText("nav-vitals", i18n.nav.vitals);
-        setText("nav-treatments", i18n.nav.treatments);
-        setText("nav-signoffs", i18n.nav.signoffs);
-
-        setText("heading-demographics", i18n.headings.demographics);
-        setText("heading-history", i18n.headings.history);
-        setText("heading-vitals", i18n.headings.vitals);
-        setText("heading-treatments", i18n.headings.treatments);
-        setText("heading-signoffs", i18n.headings.signoffs);
-
-        setText("label-name", i18n.labels.name);
-        setText("label-species", i18n.labels.species);
-        setText("label-breed", i18n.labels.breed);
-        setText("label-sex", i18n.labels.sex);
-        setText("label-age", i18n.labels.age);
-        setText("label-weight", i18n.labels.weight);
-        setText("label-coat", i18n.labels.coat);
-        setText("label-vaccinations", i18n.labels.vaccinations);
-        setText("label-allergies", i18n.labels.allergies);
-        setText("label-diet", i18n.labels.diet);
-        setText("label-kidney", i18n.labels.kidney);
-
-        setText("pill-weight", i18n.vitals.weight);
-        setText("pill-bp", i18n.vitals.bloodPressure);
-        setText("pill-pulse", i18n.vitals.pulse);
-        setText("pill-temp", i18n.vitals.temperature);
-
-        setText("th-timestamp", i18n.table.timestamp);
-        setText("th-treatment", i18n.table.treatment);
-        setText("th-notes", i18n.table.notes);
-        setText("th-staff", i18n.table.staff);
-        setText("th-controlled", i18n.table.controlled);
-        setText("th-approval", i18n.table.approval);
-
-        setText("label-meds", i18n.checklist.meds);
-        setText("label-consent", i18n.checklist.consent);
-        setText("label-controlled", i18n.checklist.controlled);
-        setText("label-approval", i18n.checklist.vetApproval);
-        setText("label-discharge", i18n.checklist.discharge);
-    </script>
 </body>
 </html>
