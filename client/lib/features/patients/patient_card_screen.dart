@@ -51,7 +51,7 @@ class PatientCardScreen extends StatelessWidget {
   const PatientCardScreen({super.key});
 
   PatientProfile _mockProfile() {
-    return PatientProfile(
+    return const PatientProfile(
       name: 'מיצי',
       species: 'חתול',
       breed: 'מעורב סיאמי',
@@ -185,8 +185,8 @@ class _PawBackdrop extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
-      child: Stack(
-        children: const [
+      child: const Stack(
+        children: [
           _PawGraphic(top: -10, left: 12, size: 140, opacity: 0.08, rotationTurns: 0.05),
           _PawGraphic(top: 120, right: 40, size: 110, opacity: 0.07, rotationTurns: -0.03),
           _PawGraphic(bottom: 180, left: 60, size: 120, opacity: 0.05, rotationTurns: 0.12),

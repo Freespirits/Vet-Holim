@@ -14,4 +14,4 @@ void main() {
     expect(find.text('יומן טיפולים'), findsOneWidget);
     expect(find.text('אישורים ובדיקות בטיחות'), findsOneWidget);
   });
-});
+}
