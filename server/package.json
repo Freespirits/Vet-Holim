@@ -8,7 +8,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "test": "jest --runInBand",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
     "load:test": "artillery run tests/load/sync-audit.yml"
   },
   "dependencies": {

@@ -1,0 +1,8 @@
+{
+  "name": "Vet Holim",
+  "short_name": "VetHolim",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2"
+}

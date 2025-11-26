@@ -8,7 +8,7 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @ManyToOne(() => Encounter, (encounter) => encounter.orders)
+  @ManyToOne('Encounter', 'orders')
   encounter!: Encounter;
 
   @ManyToOne(() => User)
@@ -32,7 +32,7 @@ export class Order {
   @Column({ nullable: true })
   rationale?: string;
 
-  @OneToMany(() => MedicationAdministrationRecord, (mar) => mar.order)
+  @OneToMany('MedicationAdministrationRecord', 'order')
   marEvents?: MedicationAdministrationRecord[];
 
   @CreateDateColumn()

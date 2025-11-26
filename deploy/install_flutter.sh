@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 CHANNEL=${FLUTTER_CHANNEL:-stable}
 VERSION=${FLUTTER_VERSION:-3.24.0}
