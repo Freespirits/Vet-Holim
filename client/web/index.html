@@ -13,21 +13,47 @@
     <script src="flutter.js" defer></script>
   </head>
   <body>
+    <main id="flutter-fallback" data-test="flutter-fallback" hidden>
+      <h1>הבנייה של Flutter אינה זמינה</h1>
+      <p>
+        יש להריץ <code>flutter build web</code> ולפרוס את הקבצים (כולל flutter.js ו-main.dart.js)
+        בתוך <code>client/web</code>. פעולה זו מונעת מסך לבן ומבטיחה שהאפליקציה תיטען כראוי.
+      </p>
+      <p data-fallback-reason aria-live="polite"></p>
+    </main>
     <script>
-      window.addEventListener('load', function () {
-        _flutter.loader
-          .loadEntrypoint({
-            serviceWorker: {
-              serviceWorkerVersion: null
-            }
-          })
-          .then(function (engineInitializer) {
-            return engineInitializer.initializeEngine();
-          })
-          .then(function (appRunner) {
-            return appRunner.runApp();
+      function showFallback(reason) {
+        const fallback = document.getElementById('flutter-fallback');
+        if (!fallback) {
+          return;
+        }
+        const reasonTarget = fallback.querySelector('[data-fallback-reason]');
+        if (reasonTarget) {
+          reasonTarget.textContent = reason;
+        }
+        fallback.hidden = false;
+      }
+
+      function startFlutter() {
+        const loader = window._flutter?.loader;
+        if (!loader) {
+          showFallback(
+            'לא נמצא flutter.js. ודאו שהרצתם "flutter build web" כדי להפיק את משאבי הווב.'
+          );
+          return;
+        }
+
+        loader
+          .loadEntrypoint({ serviceWorker: { serviceWorkerVersion: null } })
+          .then((engineInitializer) => engineInitializer.initializeEngine())
+          .then((appRunner) => appRunner.runApp())
+          .catch((error) => {
+            const details = error instanceof Error ? error.message : String(error ?? '');
+            showFallback('טעינת Flutter נכשלה: ' + details);
           });
-      });
+      }
+
+      window.addEventListener('load', startFlutter);
     </script>
   </body>
 </html>
