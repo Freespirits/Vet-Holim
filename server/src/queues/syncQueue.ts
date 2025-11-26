@@ -3,7 +3,7 @@ import { getSyncBackoffPolicy } from '../config/syncConfig.js';
 import { redis } from './lockService.js';
 import { logger } from '../logger.js';
 
-export const syncQueue = new Queue('offline-sync', { connection: redis as any });
+export const syncQueue = new Queue('offline-sync', { connection: redis });
 
 const backoffStrategies = {
   'jittered-exponential': (attemptsMade: number) => {
@@ -21,7 +21,7 @@ new Worker(
   async (job) => {
     logger.info({ jobId: job.id, type: job.name }, 'processing offline sync');
   },
-  { connection: redis as any, settings: { backoffStrategies } }
+  { connection: redis, settings: { backoffStrategies } }
 ).on('failed', (job, err) => logger.error({ jobId: job?.id, err }, 'sync job failed'));
 
 export function scheduleSync(task: Record<string, unknown>) {
