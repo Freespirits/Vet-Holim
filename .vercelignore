@@ -1,6 +1,7 @@
 # Ignore backend and infrastructure assets when deploying the Flutter web client
 server/
-deploy/
+deploy/**
+!deploy/install_flutter.sh
 shared/
 .github/
 docker-compose.yml
