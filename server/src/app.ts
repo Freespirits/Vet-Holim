@@ -26,7 +26,7 @@ app.use(
 );
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const siteRoot = path.resolve(__dirname, '..', '..');
+const siteRoot = path.resolve(__dirname, '..', '..', 'web');
 
 function serveSiteAsset(relativePath: string) {
   return (_req: express.Request, res: express.Response, next: express.NextFunction) => {
