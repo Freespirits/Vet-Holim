@@ -1,6 +1,8 @@
 import express from 'express';
 import pinoHttp from 'pino-http';
 import { randomUUID } from 'crypto';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { logger } from './logger.js';
 import { authenticate, nonceMiddleware, verifyMfa } from './middleware/auth.js';
 import { audit } from './middleware/audit.js';
@@ -22,6 +24,18 @@ app.use(
     genReqId: (req) => req.headers['x-request-id'] || randomUUID()
   })
 );
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const siteRoot = path.resolve(__dirname, '..', '..');
+
+function serveSiteAsset(relativePath: string) {
+  return (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const absolutePath = path.join(siteRoot, relativePath);
+    res.sendFile(absolutePath, (err) => {
+      if (err) next(err);
+    });
+  };
+}
 
 app.get('/.well-known/nonce', nonceMiddleware);
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
@@ -47,6 +61,9 @@ app.get('/readiness', async (_req, res) => {
 app.get('/feature-flags', (_req, res) => {
   res.json({ flags: getFeatureFlags() });
 });
+
+app.get('/', serveSiteAsset('index.html'));
+app.get(['/app.js', '/styles.css'], (req, res, next) => serveSiteAsset(req.path.slice(1))(req, res, next));
 
 app.use(authenticate, verifyMfa, audit);
 app.use('/users', userRoutes);

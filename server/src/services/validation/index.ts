@@ -6,6 +6,8 @@ const localRules = (input: ValidationInput) => {
   if (input.allergies.some((a) => input.medication.toLowerCase().includes(a.toLowerCase()))) {
     warnings.push('allergy-match');
   }
+  const zeroDosePattern = /^\s*0+(\.0+)?\s*mg\b/i;
+  if (input.dose && zeroDosePattern.test(input.dose)) warnings.push('zero-dose');
   return { safe: warnings.length === 0, warnings };
 };
 

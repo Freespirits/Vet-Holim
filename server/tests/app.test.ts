@@ -24,6 +24,14 @@ describe('API integration', () => {
     await repo.save(vet);
   });
 
+  it('serves the inpatients home page from the root', async () => {
+    const res = await request(app).get('/').expect(200);
+
+    expect(res.headers['content-type']).toContain('text/html');
+    expect(res.text).toContain('tab-inpatients');
+    expect(res.text).toContain('Vet Holim');
+  });
+
   it('creates patient and encounter, then order passes validation', async () => {
     const patientRepo = AppDataSource.getRepository(Patient);
     const encounterRepo = AppDataSource.getRepository(Encounter);
