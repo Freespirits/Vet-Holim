@@ -29,13 +29,12 @@ class SettingsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          Text(localizations
-              .settingsEnvironmentLabel(environmentName: environmentName)),
+          Text(localizations.settingsEnvironmentLabel(environmentName)),
           Text(
-            localizations.settingsApiLabel(apiBaseUrl: environment.apiBaseUrl),
+            localizations.settingsApiLabel(environment.apiBaseUrl),
             textDirection: TextDirection.ltr,
           ),
-          Text(localizations.settingsAuditEnabledLabel(auditStatus: auditStatus)),
+          Text(localizations.settingsAuditEnabledLabel(auditStatus)),
         ],
       ),
     );
