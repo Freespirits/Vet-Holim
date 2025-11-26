@@ -1,9 +1,15 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\"; git config --global --add safe.directory \"$FLUTTER_ROOT/flutter\" >/dev/null 2>&1 || true; bash deploy/install_flutter.sh; npm install --prefix server",
+  "installCommand": "bash deploy/vercel_install.sh",
   "buildCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\"; cd server && npm run build && cd ../client && flutter pub get && flutter build web --release",
   "outputDirectory": "client/build/web",
+  "functions": {
+    "api/index.ts": {
+      "runtime": "nodejs20.x",
+      "includeFiles": "server/dist/**"
+    }
+  },
   "routes": [
     {
       "src": "/api/(.*)",
