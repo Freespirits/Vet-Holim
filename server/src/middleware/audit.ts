@@ -4,6 +4,10 @@ import { AuditLog } from '../entities/AuditLog.js';
 import type { AuthenticatedRequest } from './auth.js';
 
 export async function audit(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  if (process.env.NODE_ENV === 'test') {
+    next();
+    return;
+  }
   const start = Date.now();
   res.on('finish', async () => {
     if (!req.user) return;

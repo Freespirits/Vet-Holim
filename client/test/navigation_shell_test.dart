@@ -16,6 +16,7 @@ void main() {
   testWidgets('uses navigation rail on wide layouts', (tester) async {
     await tester.binding.setSurfaceSize(const Size(1200, 900));
     await tester.pumpWidget(const ProviderScope(child: VetHolimApp()));
+    await tester.pumpAndSettle();
 
     expect(find.byType(NavigationRail), findsOneWidget);
   });

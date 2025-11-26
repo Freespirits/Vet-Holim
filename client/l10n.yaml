@@ -1,5 +1,4 @@
 template-arb-file: app_en.arb
-synthetic-package: true
 output-class: AppLocalizations
 output-localization-file: app_localizations.dart
 untranslated-messages-file: untranslated_messages.txt

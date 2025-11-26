@@ -4,13 +4,21 @@ import { AppDataSource } from '../src/db/data-source.js';
 import { User } from '../src/entities/User.js';
 import { Patient } from '../src/entities/Patient.js';
 import { Encounter } from '../src/entities/Encounter.js';
+import { Order } from '../src/entities/Order.js';
+import { MedicationAdministrationRecord } from '../src/entities/MedicationAdministrationRecord.js';
+import { AuditLog } from '../src/entities/AuditLog.js';
 
 const headersFor = (user: User) => ({ 'x-test-user': JSON.stringify(user) });
 
 describe('API integration', () => {
   let vet: User;
   beforeEach(async () => {
-    await AppDataSource.synchronize(true);
+    await AppDataSource.createQueryBuilder().delete().from(MedicationAdministrationRecord).execute();
+    await AppDataSource.createQueryBuilder().delete().from(Order).execute();
+    await AppDataSource.createQueryBuilder().delete().from(Encounter).execute();
+    await AppDataSource.createQueryBuilder().delete().from(Patient).execute();
+    await AppDataSource.createQueryBuilder().delete().from(AuditLog).execute();
+    await AppDataSource.createQueryBuilder().delete().from(User).execute();
     const repo = AppDataSource.getRepository(User);
     vet = repo.create({ name: 'Vet', email: 'vet@example.com', roles: ['vet'], active: true, mfaEnabled: false });
     await repo.save(vet);

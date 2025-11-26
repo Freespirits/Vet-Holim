@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vet_holim_client/l10n/app_localizations.dart';
 
 class PatientProfile {
   const PatientProfile({
@@ -351,8 +351,12 @@ class _DemographicsGrid extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth > 720;
-        final crossAxisCount = isWide ? 3 : 2;
+        final width = constraints.maxWidth;
+        final crossAxisCount = width > 900
+            ? 3
+            : width > 600
+                ? 2
+                : 1;
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -535,21 +539,26 @@ class _LabeledValue extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.w700),
-          ),
           Flexible(
+            flex: 0,
+            child: Text(
+              label,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
             child: Text(
               value,
               textDirection: TextDirection.rtl,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.left,
+              softWrap: true,
             ),
           ),
         ],

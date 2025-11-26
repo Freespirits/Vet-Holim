@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vet_holim_client/l10n/app_localizations.dart';
 import '../patients/patient_card_screen.dart';
 import '../encounters/encounters_screen.dart';
 import '../meds/meds_screen.dart';
@@ -20,45 +20,47 @@ class HomeShell extends ConsumerWidget {
     final currentIndex = ref.watch(navigationIndexProvider);
     final localizations = AppLocalizations.of(context)!;
     final destinations = _destinations(localizations);
-    final width = MediaQuery.of(context).size.width;
-    final useRail = width >= 900;
-
-    return Scaffold(
-      body: Row(
-        children: [
-          if (useRail)
-            NavigationRail(
-              selectedIndex: currentIndex,
-              labelType: NavigationRailLabelType.selected,
-              onDestinationSelected: (index) =>
-                  ref.read(navigationIndexProvider.notifier).state = index,
-              destinations: destinations
-                  .map(
-                    (destination) => NavigationRailDestination(
-                      icon: destination.icon,
-                      selectedIcon: destination.selectedIcon,
-                      label: Text(destination.label),
-                    ),
-                  )
-                  .toList(),
-            ),
-          Expanded(
-            child: Column(
-              children: [
-                Expanded(child: _buildPage(currentIndex)),
-                if (!useRail)
-                  NavigationBar(
-                    selectedIndex: currentIndex,
-                    onDestinationSelected: (index) => ref
-                        .read(navigationIndexProvider.notifier)
-                        .state = index,
-                    destinations: destinations,
-                  ),
-              ],
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final useRail = constraints.maxWidth >= 900;
+        return Scaffold(
+          body: Row(
+            children: [
+              if (useRail)
+                NavigationRail(
+                  selectedIndex: currentIndex,
+                  labelType: NavigationRailLabelType.selected,
+                  onDestinationSelected: (index) =>
+                      ref.read(navigationIndexProvider.notifier).state = index,
+                  destinations: destinations
+                      .map(
+                        (destination) => NavigationRailDestination(
+                          icon: destination.icon,
+                          selectedIcon: destination.selectedIcon,
+                          label: Text(destination.label),
+                        ),
+                      )
+                      .toList(),
+                ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(child: _buildPage(currentIndex)),
+                    if (!useRail)
+                      NavigationBar(
+                        selectedIndex: currentIndex,
+                        onDestinationSelected: (index) => ref
+                            .read(navigationIndexProvider.notifier)
+                            .state = index,
+                        destinations: destinations,
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { createRequire } from 'module';
+import { randomUUID } from 'crypto';
 import { DataSource } from 'typeorm';
 import { env } from '../config/env.js';
 import { User } from '../entities/User.js';
@@ -21,6 +22,15 @@ function buildDataSource(): DataSource {
     const db = newDb();
     db.public.registerFunction({ name: 'version', returns: 'text', implementation: () => 'pg-mem' });
     db.public.registerFunction({ name: 'current_database', returns: 'text', implementation: () => 'pg-mem' });
+    db.public.registerFunction({
+      name: 'uuid_generate_v4',
+      returns: 'uuid',
+      implementation: () => randomUUID(),
+      impure: true
+    });
+    db.public.none('CREATE TABLE IF NOT EXISTS pg_views (schemaname text, viewname text)');
+    db.public.none('CREATE TABLE IF NOT EXISTS pg_matviews (schemaname text, matviewname text)');
+    db.public.none('CREATE TABLE IF NOT EXISTS pg_tables (schemaname text, tablename text)');
     return db.adapters.createTypeormDataSource({ type: 'postgres', entities, synchronize: true }) as DataSource;
   }
   try {

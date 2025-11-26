@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:vet_holim_client/l10n/app_localizations.dart';
 
 class EncountersScreen extends StatelessWidget {
   const EncountersScreen({super.key});
