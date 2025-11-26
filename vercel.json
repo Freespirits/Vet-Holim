@@ -6,7 +6,7 @@
   "outputDirectory": "client/build/web",
   "functions": {
     "api/index.ts": {
-      "runtime": "nodejs20.x",
+      "runtime": "nodejs18.x",
       "includeFiles": "server/dist/**"
     }
   },
