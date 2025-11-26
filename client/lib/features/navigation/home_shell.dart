@@ -7,6 +7,7 @@ import '../meds/meds_screen.dart';
 import '../tasks/tasks_screen.dart';
 import '../settings/settings_screen.dart';
 import '../../config/environment.dart';
+import '../../responsive.dart';
 
 final navigationIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -20,39 +21,31 @@ class HomeShell extends ConsumerWidget {
     final currentIndex = ref.watch(navigationIndexProvider);
     final localizations = AppLocalizations.of(context)!;
     final destinations = _destinations(localizations);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final useRail = constraints.maxWidth >= 900;
+    void selectIndex(int index) {
+      ref.read(navigationIndexProvider.notifier).state = index;
+    }
+
+    return ResponsiveLayout(
+      builder: (context, sizeClass) {
+        final useRail = sizeClass != DeviceSizeClass.compact;
         return Scaffold(
           body: Row(
             children: [
               if (useRail)
-                NavigationRail(
-                  selectedIndex: currentIndex,
-                  labelType: NavigationRailLabelType.selected,
-                  onDestinationSelected: (index) =>
-                      ref.read(navigationIndexProvider.notifier).state = index,
-                  destinations: destinations
-                      .map(
-                        (destination) => NavigationRailDestination(
-                          icon: destination.icon,
-                          selectedIcon: destination.selectedIcon,
-                          label: Text(destination.label),
-                        ),
-                      )
-                      .toList(),
+                _NavigationRailMenu(
+                  currentIndex: currentIndex,
+                  destinations: destinations,
+                  onDestinationSelected: selectIndex,
                 ),
               Expanded(
                 child: Column(
                   children: [
                     Expanded(child: _buildPage(currentIndex)),
                     if (!useRail)
-                      NavigationBar(
-                        selectedIndex: currentIndex,
-                        onDestinationSelected: (index) => ref
-                            .read(navigationIndexProvider.notifier)
-                            .state = index,
+                      _BottomNavigationMenu(
+                        currentIndex: currentIndex,
                         destinations: destinations,
+                        onDestinationSelected: selectIndex,
                       ),
                   ],
                 ),
@@ -108,5 +101,56 @@ class HomeShell extends ConsumerWidget {
       default:
         return const PatientCardScreen();
     }
+  }
+}
+
+class _NavigationRailMenu extends StatelessWidget {
+  const _NavigationRailMenu({
+    required this.currentIndex,
+    required this.destinations,
+    required this.onDestinationSelected,
+  });
+
+  final int currentIndex;
+  final List<NavigationDestination> destinations;
+  final void Function(int index) onDestinationSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationRail(
+      selectedIndex: currentIndex,
+      labelType: NavigationRailLabelType.selected,
+      onDestinationSelected: onDestinationSelected,
+      destinations: destinations
+          .map(
+            (destination) => NavigationRailDestination(
+              icon: destination.icon,
+              selectedIcon: destination.selectedIcon,
+              label: Text(destination.label),
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class _BottomNavigationMenu extends StatelessWidget {
+  const _BottomNavigationMenu({
+    required this.currentIndex,
+    required this.destinations,
+    required this.onDestinationSelected,
+  });
+
+  final int currentIndex;
+  final List<NavigationDestination> destinations;
+  final void Function(int index) onDestinationSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return NavigationBar(
+      selectedIndex: currentIndex,
+      onDestinationSelected: onDestinationSelected,
+      destinations: destinations,
+    );
   }
 }
