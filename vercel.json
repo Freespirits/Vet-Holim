@@ -1,8 +1,7 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "bash deploy/install_flutter.sh",
-  "buildCommand": "export PATH=\"$PWD/.flutter/flutter/bin:$PATH\" && cd client && flutter pub get && flutter build web --release",
+  "buildCommand": "cd client && flutter pub get && flutter build web --release",
   "outputDirectory": "client/build/web",
   "routes": [
     {
