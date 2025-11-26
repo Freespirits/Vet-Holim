@@ -1,9 +1,15 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\"; git config --global --add safe.directory \"$FLUTTER_ROOT/flutter\" >/dev/null 2>&1 || true; bash deploy/install_flutter.sh; npm install --prefix server",
+  "installCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export FLUTTER_ROOT FLUTTER_INSTALL_DIR=\"$FLUTTER_ROOT\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\" NPM_CONFIG_REGISTRY=\"https://registry.npmjs.org/\" NPM_FALLBACK_REGISTRY=\"https://registry.npmmirror.com/\"; git config --global --add safe.directory \"$FLUTTER_ROOT/flutter\" >/dev/null 2>&1 || true; npm config set registry \"$NPM_CONFIG_REGISTRY\" --location=project >/dev/null 2>&1 || true; bash deploy/install_flutter.sh; npm install --registry=\"$NPM_CONFIG_REGISTRY\" --prefix server || npm install --registry=\"$NPM_FALLBACK_REGISTRY\" --prefix server",
   "buildCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\"; cd server && npm run build && cd ../client && flutter pub get && flutter build web --release",
   "outputDirectory": "client/build/web",
+  "functions": {
+    "api/index.ts": {
+      "runtime": "nodejs20.x",
+      "includeFiles": "server/dist/**"
+    }
+  },
   "routes": [
     {
       "src": "/api/(.*)",
