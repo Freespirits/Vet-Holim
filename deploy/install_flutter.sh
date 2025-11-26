@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 CHANNEL=${FLUTTER_CHANNEL:-stable}
 VERSION=${FLUTTER_VERSION:-3.24.0}
@@ -19,4 +19,5 @@ curl -L "$URL" -o "$INSTALL_ROOT/$TARBALL"
 tar -xf "$INSTALL_ROOT/$TARBALL" -C "$INSTALL_ROOT"
 rm -f "$INSTALL_ROOT/$TARBALL"
 
+git config --global --add safe.directory "$INSTALL_ROOT/flutter" >/dev/null 2>&1 || true
 "$INSTALL_ROOT/flutter/bin/flutter" --version

@@ -1,7 +1,9 @@
 process.env.NODE_ENV = 'test';
 process.env.USE_IN_MEMORY_DB = 'true';
 
-jest.mock('ioredis', () => require('ioredis-mock'));
+import { jest } from '@jest/globals';
+
+jest.unstable_mockModule('ioredis', () => import('ioredis-mock'));
 
 import type { DataSource } from 'typeorm';
 

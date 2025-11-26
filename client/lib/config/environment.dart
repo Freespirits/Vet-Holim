@@ -40,13 +40,13 @@ Environment buildEnvironment() {
     case 'production':
       return const Environment(
         name: 'production',
-        apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.vetholim.local'),
+        apiBaseUrl: String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.vetholim.local'),
         featureFlags: defaultFeatureFlags,
       );
     case 'staging':
       return const Environment(
         name: 'staging',
-        apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://staging-api.vetholim.local'),
+        apiBaseUrl: String.fromEnvironment('API_BASE_URL', defaultValue: 'https://staging-api.vetholim.local'),
         featureFlags: defaultFeatureFlags,
       );
     default:

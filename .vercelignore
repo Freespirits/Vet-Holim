@@ -1,9 +1,7 @@
-# Ignore backend and infrastructure assets when deploying the Flutter web client
-server/
-deploy/
-shared/
+# Ignore local tooling and infra assets not required for Vercel deploys
 .github/
 docker-compose.yml
 ROADMAP.md
 SPEC.md
-index.html
+deploy/k8s/
+/index.html

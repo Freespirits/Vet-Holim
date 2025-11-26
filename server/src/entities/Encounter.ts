@@ -16,7 +16,7 @@ export class Encounter {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @ManyToOne(() => Patient, (patient) => patient.encounters)
+  @ManyToOne('Patient', 'encounters')
   patient!: Patient;
 
   @ManyToOne(() => User, { nullable: true })
@@ -34,7 +34,7 @@ export class Encounter {
   @Column('jsonb', { default: {} })
   vitals!: Record<string, unknown>;
 
-  @OneToMany(() => Order, (order) => order.encounter)
+  @OneToMany('Order', 'encounter')
   orders?: Order[];
 
   @CreateDateColumn()

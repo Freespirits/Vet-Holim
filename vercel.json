@@ -1,10 +1,14 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "npm install --prefix server",
-  "buildCommand": "cd client && flutter pub get && flutter build web --release",
+  "installCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\"; git config --global --add safe.directory \"$FLUTTER_ROOT/flutter\" >/dev/null 2>&1 || true; bash deploy/install_flutter.sh; npm install --prefix server",
+  "buildCommand": "FLUTTER_ROOT=\"$PWD/.flutter\"; export PATH=\"$FLUTTER_ROOT/flutter/bin:$PATH\"; cd server && npm run build && cd ../client && flutter pub get && flutter build web --release",
   "outputDirectory": "client/build/web",
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.ts"
+    },
     {
       "src": "/(.*\\.(?:css|js|map|png|jpg|jpeg|gif|svg|ico|webp|ttf|woff|woff2|json|wasm|html))",
       "dest": "/$1"

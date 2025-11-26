@@ -18,7 +18,7 @@ export const app = express();
 app.use(express.json());
 app.use(
   pinoHttp({
-    logger,
+    logger: logger as any,
     genReqId: (req) => req.headers['x-request-id'] || randomUUID()
   })
 );

@@ -11,7 +11,7 @@ import { logger } from './logger.js';
 
 let sdk: NodeSDK | null = null;
 
-export async function startTelemetry() {
+export async function startTelemetry(): Promise<NodeSDK | void> {
   if (sdk) return sdk;
 
   const resource = new Resource({
@@ -24,11 +24,12 @@ export async function startTelemetry() {
     traceExporter: new OTLPTraceExporter({
       url: `${env.otelExporterEndpoint}/v1/traces`
     }),
-    metricReader: new PeriodicExportingMetricReader({
-      exporter: new OTLPMetricExporter({
-        url: `${env.otelExporterEndpoint}/v1/metrics`
-      })
-    }),
+    metricReader:
+      (new PeriodicExportingMetricReader({
+        exporter: new OTLPMetricExporter({
+          url: `${env.otelExporterEndpoint}/v1/metrics`
+        })
+      }) as any),
     instrumentations: [new HttpInstrumentation(), new ExpressInstrumentation()]
   });
 

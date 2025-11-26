@@ -2,7 +2,7 @@ import Redis from 'ioredis';
 import RedisMock from 'ioredis-mock';
 import { env } from '../config/env.js';
 
-export const redis = env.useMockRedis ? new (RedisMock as typeof Redis)() : new Redis(env.redisUrl);
+export const redis: Redis = env.useMockRedis ? new (RedisMock as typeof Redis)() : new Redis(env.redisUrl);
 
 export async function withLock(key: string, ttlMs: number, task: () => Promise<unknown>) {
   const lockKey = `lock:${key}`;

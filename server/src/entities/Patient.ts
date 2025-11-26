@@ -28,7 +28,7 @@ export class Patient {
   @ManyToOne(() => User, { nullable: true })
   primaryVeterinarian?: User;
 
-  @OneToMany(() => Encounter, (encounter) => encounter.patient)
+  @OneToMany('Encounter', 'patient')
   encounters?: Encounter[];
 
   @CreateDateColumn()
