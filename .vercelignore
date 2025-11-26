@@ -1,0 +1,9 @@
+# Ignore backend and infrastructure assets when deploying the Flutter web client
+server/
+deploy/
+shared/
+.github/
+docker-compose.yml
+ROADMAP.md
+SPEC.md
+index.html

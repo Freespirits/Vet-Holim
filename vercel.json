@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "framework": null,
+  "buildCommand": "cd client && flutter pub get && flutter build web --release",
+  "outputDirectory": "client/build/web",
+  "routes": [
+    {
+      "src": "/(.*\\.(?:css|js|map|png|jpg|jpeg|gif|svg|ico|webp|ttf|woff|woff2|json|wasm|html))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
