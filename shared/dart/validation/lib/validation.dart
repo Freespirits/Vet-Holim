@@ -13,6 +13,7 @@ ValidationResult validateOrder({
   String? dose,
 }) {
   final warnings = <String>[];
+  final zeroDosePattern = RegExp(r'^\s*0+(\.0+)?\s*mg\b', caseSensitive: false);
   if (weightKg != null && weightKg < 0.5) {
     warnings.add('weight-too-low');
   }
@@ -21,6 +22,6 @@ ValidationResult validateOrder({
       warnings.add('allergy-match');
     }
   }
-  if (dose != null && dose.contains('0mg')) warnings.add('zero-dose');
+  if (dose != null && zeroDosePattern.hasMatch(dose)) warnings.add('zero-dose');
   return ValidationResult(safe: warnings.isEmpty, warnings: warnings);
 }

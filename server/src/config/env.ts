@@ -24,6 +24,7 @@ export const env = {
   oidcClientId: process.env.OIDC_CLIENT_ID || 'vetholim-api',
   redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
   auditRetentionDays: parseInt(process.env.AUDIT_RETENTION_DAYS || '30', 10),
+  dartExecutable: process.env.DART_EXECUTABLE || 'dart',
   dartValidatorPath:
     process.env.DART_VALIDATOR_PATH || new URL('../../shared/dart/validation/bin/validator.dart', import.meta.url).pathname,
   offlineBackoffBaseMs: parseInt(process.env.OFFLINE_BACKOFF_MS || '1000', 10),
