@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction } from 'express';
+import type { Response, NextFunction } from 'express';
 import { AppDataSource } from '../db/data-source.js';
 import { AuditLog } from '../entities/AuditLog.js';
 import type { AuthenticatedRequest } from './auth.js';
