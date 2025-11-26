@@ -18,6 +18,7 @@
         setupTabs();
         setupGridInteractions();
         setupHeaderInputsPersistence();
+        setupFlutterEmbed();
     });
 
     function setupTabs() {
@@ -106,5 +107,35 @@
                 storage.setItem(key, input.value);
             });
         });
+    }
+
+    function setupFlutterEmbed() {
+        const frame = document.querySelector("#flutter-app-frame");
+        const status = document.querySelector("[data-flutter-status]");
+
+        if (!frame) {
+            return;
+        }
+
+        const source = frame.dataset.src || frame.getAttribute("src") || "client/web/index.html";
+        if (!frame.getAttribute("src")) {
+            frame.src = source;
+        }
+
+        updateStatusElement(status, "טוען רכיב Flutter…", "loading");
+        frame.addEventListener("load", function () {
+            updateStatusElement(status, "רכיב Flutter נטען בהצלחה.", "ready");
+        });
+        frame.addEventListener("error", function () {
+            updateStatusElement(status, "שגיאת טעינה – ודאו שהבנייה זמינה ב-client/web.", "error");
+        });
+    }
+
+    function updateStatusElement(target, message, tone) {
+        if (!target) {
+            return;
+        }
+        target.textContent = message;
+        target.dataset.tone = tone;
     }
 })();
