@@ -18,6 +18,7 @@
             <button class="tab-button" data-tab-target="tab-journal">יומן רופא</button>
             <button class="tab-button" data-tab-target="tab-inventory">מלאים</button>
             <button class="tab-button" data-tab-target="tab-inpatients">מאושפזים</button>
+            <button class="tab-button" data-tab-target="tab-flutter">אפליקציית Flutter</button>
         </nav>
     </header>
 
@@ -959,6 +960,26 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="tab-flutter">
+            <div class="card">
+                <h2>אפליקציית Flutter</h2>
+                <p class="muted">
+                    שילוב עמוד Flutter-web בתוך עטיפת ה-HTML מאפשר בדיקות אינטגרציה מוקדמות: שמירת הניווט, טעינת
+                    המשאב, ומעקב אחרי טעינה מוצלחת או שגיאה.
+                </p>
+                <div class="flutter-embed">
+                    <div class="flutter-status" data-flutter-status>טוען רכיב Flutter…</div>
+                    <iframe
+                        id="flutter-app-frame"
+                        title="הטמעת אפליקציית Flutter"
+                        src="client/web/index.html"
+                        loading="lazy"
+                        allow="fullscreen"
+                    ></iframe>
                 </div>
             </div>
         </section>
