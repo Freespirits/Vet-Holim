@@ -117,7 +117,7 @@
             return;
         }
 
-        const source = frame.dataset.src || frame.getAttribute("src") || "client/web/index.html";
+        const source = frame.dataset.src || frame.getAttribute("src") || "/client/web/index.html";
         if (!frame.getAttribute("src")) {
             frame.src = source;
         }
