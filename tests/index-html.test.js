@@ -25,5 +25,8 @@ test('exposes a Flutter tab with an embedded frame', () => {
     const flutterPanel = getFlutterPanel(html);
     assert.ok(flutterPanel, 'Flutter tab content should exist');
     assert.ok(/id="flutter-app-frame"/.test(flutterPanel[0]), 'Flutter frame id is missing');
-    assert.ok(/src="client\/web\/index.html"/.test(flutterPanel[0]), 'Flutter frame should point to the web build');
+    assert.ok(
+        /src="\/client\/web\/index.html"/.test(flutterPanel[0]),
+        'Flutter frame should point to the absolute web build path so it resolves from /web/index.html'
+    );
 });
