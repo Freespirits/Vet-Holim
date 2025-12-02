@@ -15,6 +15,10 @@ const shouldUseSsl =
   process.env.DATABASE_SSL === 'true' || (process.env.DATABASE_SSL !== 'false' && Boolean(vercelDatabaseUrl));
 const useMockRedis = process.env.MOCK_REDIS === 'true' || (!process.env.REDIS_URL && runningOnVercel);
 const disableBackgroundWorkers = process.env.DISABLE_BACKGROUND_WORKERS === 'true' || runningOnVercel;
+const offlineBackoffBaseMs = parseInt(
+  process.env.OFFLINE_BACKOFF_BASE_MS || process.env.OFFLINE_BACKOFF_MS || '1000',
+  10
+);
 
 export const env = {
   port: parseInt(process.env.PORT || '4000', 10),
@@ -27,7 +31,7 @@ export const env = {
   dartExecutable: process.env.DART_EXECUTABLE || 'dart',
   dartValidatorPath:
     process.env.DART_VALIDATOR_PATH || new URL('../../shared/dart/validation/bin/validator.dart', import.meta.url).pathname,
-  offlineBackoffBaseMs: parseInt(process.env.OFFLINE_BACKOFF_MS || '1000', 10),
+  offlineBackoffBaseMs,
   offlineBackoffMaxMs: parseInt(process.env.OFFLINE_BACKOFF_MAX_MS || '32000', 10),
   offlineBackoffAttempts: parseInt(process.env.OFFLINE_BACKOFF_ATTEMPTS || '5', 10),
   offlineBackoffJitter: process.env.OFFLINE_BACKOFF_JITTER
