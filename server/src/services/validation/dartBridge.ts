@@ -16,6 +16,24 @@ class DartExecutableNotFoundError extends Error {
   }
 }
 
+class DartValidationParseError extends Error {
+  constructor(
+    context: DartExecutionContext,
+    stdout: string,
+    stderr: string,
+    exitCode?: number | null,
+    signal?: NodeJS.Signals | null
+  ) {
+    const summary = buildContextSummary(context, stdout, stderr, exitCode, signal);
+    super(`Failed to parse dart validator output${summary ? ` (${summary})` : ''}`);
+    this.name = 'DartValidationParseError';
+  }
+
+  toString() {
+    return `⚠️ ${this.name}: ${this.message}`;
+  }
+}
+
 const isExecutableOnPath = (executable: string) => {
   if (executable.includes('/') || executable.includes('\\')) return existsSync(executable);
   const pathEntries = process.env.PATH?.split(delimiter) || [];
@@ -31,6 +49,30 @@ export type ValidationInput = {
 
 type DartExecutionContext = { executable: string; dartPath: string; cwd: string };
 
+const summarizeField = (label: string, value?: string | null) => {
+  if (!value) return '';
+  const compactValue = value.trim().replace(/\s+/g, ' ').slice(0, 120);
+  return compactValue ? `${label}="${compactValue}"` : '';
+};
+
+const buildContextSummary = (
+  context: DartExecutionContext,
+  stdout: string,
+  stderr: string,
+  exitCode?: number | null,
+  signal?: NodeJS.Signals | null
+) =>
+  [
+    summarizeField('validator', context.dartPath),
+    summarizeField('executable', context.executable),
+    exitCode !== undefined && exitCode !== null ? `exit=${exitCode}` : '',
+    signal ? `signal=${signal}` : '',
+    summarizeField('stdout', stdout),
+    summarizeField('stderr', stderr)
+  ]
+    .filter(Boolean)
+    .join('; ');
+
 const collectDartResult = (
   child: ChildProcessWithoutNullStreams,
   payload: ValidationInput,
@@ -38,6 +80,11 @@ const collectDartResult = (
 ) =>
   new Promise<{ safe: boolean; warnings: string[] }>((resolvePromise, reject) => {
     const buffer = { stdout: '', stderr: '' };
+    const rejectWithParseError = (exitCode?: number | null, signal?: NodeJS.Signals | null) => {
+      const err = new DartValidationParseError(context, buffer.stdout, buffer.stderr, exitCode, signal);
+      logger.warn({ err }, 'Failed to parse dart validator output, falling back');
+      reject(err);
+    };
     (['stdout', 'stderr'] as const).forEach((key) => {
       child[key].setEncoding('utf8');
       child[key].on('data', (chunk: string) => {
@@ -48,12 +95,13 @@ const collectDartResult = (
       logger.warn({ err, ...context }, 'Failed to invoke dart validator, falling back');
       reject(err);
     });
-    child.once('close', () => {
+    child.once('close', (code, signal) => {
       if (buffer.stderr) logger.warn({ stderr: buffer.stderr }, 'dart validator stderr');
+      if (code !== null && code !== 0) return rejectWithParseError(code, signal);
       try {
         resolvePromise(JSON.parse(buffer.stdout));
       } catch (err) {
-        reject(err);
+        rejectWithParseError(code, signal);
       }
     });
     child.stdin.end(JSON.stringify(payload));
